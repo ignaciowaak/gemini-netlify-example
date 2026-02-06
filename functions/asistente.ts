@@ -20,7 +20,7 @@ export default async (req: Request, context: Context) => {
     }
     
     const client = new OpenAI({
-      apiKey: process.env.GROQ_API_KEY,
+      apiKey: process.env.GEMINI_API_KEY,
       baseURL: "https://api.groq.com/openai/v1",
     });
     
