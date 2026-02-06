@@ -19,62 +19,31 @@ export default async (req: Request, context: Context) => {
       });
     }
     
-    // --- NUEVO: recupera y limpia el contenido público del sitio ---
-    // Cambiá la URL si necesitás otra.
-    const SITE_URL = "https://jbceramicaa.netlify.app/";
-    
-    async function fetchSiteText(url: string, maxChars = 20000) {
-      try {
-        const res = await fetch(url, { method: "GET" });
-        if (!res.ok) return `ERROR_AL_DESCARGAR_SITIO: ${res.status}`;
-        let html = await res.text();
-        
-        // eliminar scripts y estilos
-        html = html.replace(/<script[\s\S]*?<\/script>/gi, " ");
-        html = html.replace(/<style[\s\S]*?<\/style>/gi, " ");
-        
-        // quitar tags y dejar texto plano
-        let text = html.replace(/<\/?[^>]+(>|$)/g, " ");
-        // colapsar espacios y cortar a maxChars
-        text = text.replace(/\s+/g, " ").trim();
-        if (text.length > maxChars) text = text.slice(0, maxChars) + " ...[TRUNCADO]";
-        return text || "SIN_TEXTO_EXTRAÍDO";
-      } catch (e: any) {
-        return `ERROR_AL_DESCARGAR_SITIO: ${String(e.message || e)}`;
-      }
-    }
-    
-    const siteText = await fetchSiteText(SITE_URL, 20000);
-    // --- FIN: extracción de sitio ---
-    
     const client = new OpenAI({
       apiKey: process.env.GROQ_API_KEY,
       baseURL: "https://api.groq.com/openai/v1",
     });
     
-    // --- SISTEMA: prompt mejorado para el modelo ---
-    const systemPrompt = `Eres el asistente institucional "Asistente de JB Cerámica".
-- Responde **solo en español**.
-- Usa **ÚNICAMENTE** la información pública extraída del sitio oficial (esta info se te provee en el siguiente mensaje del sistema).
-- No inferir ni inventar datos que no estén presentes en esa información.
-- Si la información solicitada NO figura en el sitio, indícalo de forma clara y profesional y sugiere usar los medios de contacto publicados en la web.
-- No saludes ni uses frases de cortesía innecesarias; responde directo y conciso.
-- Cuando necesites aclaración, **haz preguntas cortas** (máx. 10 palabras).
-- No incluyas ni pegues la URL en las respuestas.
-- No des opiniones externas ni recomendaciones fuera de la web oficial.`;
-    
-    // Se agrega otro mensaje de sistema con el texto extraído del sitio.
-    const siteSystemMessage = `EXTRACTO_WEB (texto extraído automáticamente de la web oficial):
-${siteText}`;
+    const systemPrompt = `Eres un asistente virtual institucional integrado en una Netlify Function. 
+Tu identidad es “Asistente de JB Cerámica”. 
+
+No estás autorizado a inferir, completar ni inventar datos que no estén explícitamente publicados en ese sitio. 
+
+Si una consulta no está relacionada con JB Cerámica o la información solicitada no figura en la web, debes indicarlo de forma clara y profesional y sugerir el contacto a través de los medios publicados en el sitio. 
+
+Al iniciar cada interacción debes presentarte como asistente de JB Cerámica y aclarar que tus respuestas se basan únicamente en el contenido del sitio web oficial. 
+
+No debes emitir opiniones, recomendaciones externas ni responder fuera de este alcance bajo ninguna circunstancia.
+
+Responde SOLO siguiendo estas reglas. Nunca rompas el rol ni agregues información externa  solo responde con informacion de la web.`;
     
     const completion = await client.chat.completions.create({
-      model: "openai/gpt-oss-20b",
+      model: "openai/gpt-oss-20b", // o prueba "llama-3.1-70b-versatile", "mixtral-8x7b-32768", etc.
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "system", content: siteSystemMessage },
         { role: "user", content: prompt },
       ],
-      temperature: 0.2,
+      temperature: 0.2, // bajo para mayor fidelidad al prompt
       max_tokens: 512,
     });
     
