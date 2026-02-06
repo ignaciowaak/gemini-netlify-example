@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      color: #2c3e50;
+      line-height: 1.6;
+    }
+    
+    .container { 
+      max-width: 1000px; 
+      margin: 0 auto; 
+      padding: 40px 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding-bottom: 30px;
+      border-bottom: 2px solid #e8ecf1;
+    }
+    
+    h1 { 
+      font-family: 'Poppins', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    
+    .subtitle {
+      color: #718096;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+    
+    .section { 
+      background: #ffffff; 
+      padding: 32px; 
+      margin-bottom: 28px; 
+      border-radius: 10px;
+      border: 1px solid #e8ecf1;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .section:hover {
+      border-color: #d1dae6;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    h2 { 
+      font-family: 'Poppins', sans-serif;
+      color: #1a202c; 
+      margin-bottom: 24px; 
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label { 
+      display: block; 
+      margin-bottom: 8px; 
+      color: #2c3e50;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+    }
+    
+    input, select { 
+      width: 100%; 
+      padding: 12px 14px; 
+      border: 1px solid #cbd5e0; 
+      border-radius: 8px; 
+      box-sizing: border-box;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s ease;
+      background: #fafbfc;
+    }
+    
+    input:focus, select:focus { 
+      outline: none;
+      border-color: #4a90e2;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.08);
+    }
+    
+    input::placeholder {
+      color: #a0aec0;
+    }
+    
+    button { 
+      width: 100%; 
+      padding: 13px 16px; 
+      margin-top: 8px;
+      background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+      color: #ffffff; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(74, 144, 226, 0.25);
+      letter-spacing: 0.3px;
+    }
+    
+    button:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(74, 144, 226, 0.35);
+    }
+    
+    button:active { 
+      transform: translateY(0);
+    }
+    
+    button:disabled {
+      background: #cbd5e0;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .error { 
+      background: #fef2f2; 
+      color: #991b1b; 
+      padding: 14px 16px; 
+      border-radius: 8px; 
+      text-align: left;
+      margin-top: 16px;
+      border-left: 4px solid #dc2626;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid #fecaca;
+    }
+    
+    .success { 
+      background: #f0fdf4; 
+      color: #166534; 
+      padding: 14px 16px; 
+      border-radius: 8px; 
+      text-align: left;
+      margin-top: 16px;
+      border-left: 4px solid #16a34a;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid #bbf7d0;
+    }
+    
+    .progress-bar { 
+      width: 100%; 
+      background: #e8ecf1; 
+      border-radius: 8px; 
+      overflow: hidden; 
+      margin-top: 16px; 
+      display: none;
+      height: 6px;
+    }
+    
+    .progress-bar-inner { 
+      height: 100%; 
+      width: 0; 
+      background: linear-gradient(90deg, #4a90e2 0%, #357abd 100%);
+      transition: width 0.3s ease;
+    }
+    
+    .list-item { 
+      padding: 18px;
+      background: #f8f9fa;
+      margin-bottom: 14px; 
+      border-radius: 8px;
+      border-left: 3px solid #4a90e2;
+      transition: all 0.3s ease;
+      border: 1px solid #e8ecf1;
+      border-left: 3px solid #4a90e2;
+    }
+    
+    .list-item:hover { 
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .list-item p { 
+      margin: 8px 0; 
+      color: #2c3e50; 
+      font-size: 14px;
+    }
+    
+    .list-item strong { 
+      color: #1a202c;
+      font-weight: 600;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+      letter-spacing: 0.3px;
+    }
+    
+    .status-pending {
+      background: #fef08a;
+      color: #854d0e;
+      border: 1px solid #fcd34d;
+    }
+    
+    .status-completed {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .mark-comprado-btn { 
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff; 
+      padding: 10px 14px; 
+      border: none; 
+      border-radius: 6px; 
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 12px;
+      transition: all 0.3s ease;
+      width: 100%;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+    }
+    
+    .mark-comprado-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .mark-comprado-btn:disabled { 
+      background: #d1d5db;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .thumbnail-gallery { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+      gap: 12px; 
+      margin-top: 16px;
+    }
+    
+    .thumbnail { 
+      position: relative; 
+      width: 100%; 
+      aspect-ratio: 1; 
+      border-radius: 8px; 
+      overflow: hidden; 
+      background: #f0f4f8;
+      border: 1.5px solid #e8ecf1;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .thumbnail:hover { 
+      border-color: #4a90e2;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+    }
+    
+    .thumbnail img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover;
+    }
+    
+    .thumbnail .remove-btn { 
+      position: absolute; 
+      top: 6px; 
+      right: 6px; 
+      background: rgba(220, 38, 38, 0.9); 
+      color: white; 
+      border: none; 
+      border-radius: 50%; 
+      width: 28px; 
+      height: 28px; 
+      cursor: pointer; 
+      font-size: 18px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .thumbnail .remove-btn:hover { 
+      background: rgba(220, 38, 38, 1);
+      transform: scale(1.1);
+    }
+    
+    .helper-text {
+      color: #718096;
+      font-size: 13px;
+      margin-top: 8px;
+      font-weight: 400;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #718096;
+    }
+    
+    .empty-state-text {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    
+    .category-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      background: #f8f9fa;
+      border: 1px solid #e8ecf1;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .category-item:hover {
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .category-name {
+      font-weight: 600;
+      color: #1a202c;
+      flex-grow: 1;
+    }
+    
+    .category-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .category-actions button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: auto;
+      margin: 0;
+    }
+    
+    .btn-delete {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .btn-delete:hover {
+      background: #dc2626;
+    }
+    
+    @media (max-width: 768px) {
+      .container { 
+        padding: 20px 16px;
+      }
+      
+      h1 { 
+        font-size: 24px;
+      }
+      
+      .section { 
+        padding: 20px;
+      }
+      
+      h2 { 
+        font-size: 18px;
+      }
+      
+      .thumbnail-gallery { 
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); 
+        gap: 10px;
+      }
+      
+      .list-item { 
+        padding: 14px;
+      }
+      
+      label {
+        font-size: 13px;
+      }
+      
+      input, select {
+        font-size: 16px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Panel de Administración</h1>
+      <p class="subtitle">Gestiona productos, imágenes del slider y reservas</p>
+    </div>
+    
+    <!-- Gestionar Categorías -->
+    <div class="section">
+      <h2>Gestionar Categorías</h2>
+      <p class="helper-text" style="margin-bottom: 16px;">Crea, edita o elimina las categorías de tu tienda</p>
+      
+      <div class="form-group">
+        <label>Nombre de la Categoría</label>
+        <input id="catName" type="text" placeholder="Ej: Camisetas, Pantalones, Accesorios">
+      </div>
+      
+      <button type="button" onclick="addCategory()" style="margin-bottom: 24px;">Agregar Categoría</button>
+      
+      <div id="categoriesList"></div>
+    </div>
+
+    <!-- Subir Publicación -->
+    <div class="section">
+      <h2>Crear Nueva Publicación</h2>
+      
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="prodCat">
+          <option value="">Selecciona una categoría...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre del Producto</label>
+        <input id="prodName" type="text" placeholder="Ingresa el nombre del producto">
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <input id="prodDesc" type="text" placeholder="Describe brevemente el producto">
+      </div>
+
+      <div class="form-group">
+        <label>Precio</label>
+        <input id="prodPrice" type="number" placeholder="Precio en $" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label>Estado de Oferta</label>
+        <select id="prodSale">
+          <option value="false">No está en oferta</option>
+          <option value="true">Aplicar descuento/oferta</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Imágenes del Producto</label>
+        <input id="prodFileInput" type="file" accept="image/*" multiple style="display:none">
+        <button type="button" id="addProdFileBtn">Seleccionar Imágenes</button>
+        <p class="helper-text">Puedes agregar múltiples imágenes. Se mostrarán como miniaturas abajo.</p>
+      </div>
+
+      <div class="thumbnail-gallery" id="prodPreview"></div>
+      <div class="progress-bar" id="prodProgress"><div class="progress-bar-inner" id="prodProgressInner"></div></div>
+      <button onclick="uploadProduct()">Publicar Producto</button>
+      <div id="prodFeedback"></div>
+    </div>
+
+    <!-- Subir Slider -->
+    <div class="section">
+      <h2>Gestionar Imágenes del Slider</h2>
+      <p class="helper-text" style="margin-bottom: 16px;">Estas imágenes se mostrarán en el carrusel principal de la página inicial</p>
+      
+      <input id="sliderInput" type="file" accept="image/*" multiple style="display:none">
+      <button type="button" onclick="sliderInput.click()">Seleccionar Imágenes</button>
+      <p class="helper-text" style="margin-top:10px;margin-bottom:6px;">Imágenes ya cargadas en el slider:</p>
+      <div class="thumbnail-gallery" id="sliderExisting"></div>
+      <p class="helper-text" style="margin-top:10px;margin-bottom:6px;">Nuevas imágenes a subir:</p>
+      <div class="thumbnail-gallery" id="sliderPreview"></div>
+      <div class="progress-bar" id="sliderProgress"><div class="progress-bar-inner" id="sliderProgressInner"></div></div>
+      <button onclick="uploadSlider()">Actualizar Slider</button>
+      <div id="sliderFeedback"></div>
+    </div>
+
+    <!-- Reservas -->
+    <div class="section">
+      <h2>Gestionar Reservas</h2>
+      <div id="resList">
+        <div class="empty-state">
+          <p class="empty-state-text">Cargando reservas...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Gestionar Productos: ver / editar / eliminar -->
+    <div class="section">
+      <h2>Gestionar Productos</h2>
+      <p class="helper-text" style="margin-bottom: 16px;">Lista de productos por categoría. Puedes editar descripción, precio y estado de oferta, o eliminar el producto.</p>
+      <div id="productsList">
+        <div class="empty-state"><p class="empty-state-text">Cargando productos...</p></div>
+      </div>
+    </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, set, onValue, update, push, get } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+    import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhz1XoprhhrHyYfuAdIYGMJxm5UsDO-4",
+      authDomain: "the-pic-c437e.firebaseapp.com",
+      databaseURL: "https://the-pic-c437e-default-rtdb.firebaseio.com",
+      projectId: "the-pic-c437e",
+      storageBucket: "the-pic-c437e.appspot.com",
+      messagingSenderId: "750954597180",
+      appId: "1:750954597180:web:fc586d73d852ed5e17ec39"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const storage = getStorage(app);
+
+    // CATEGORÍAS
+    const prodCatSelect = document.getElementById('prodCat');
+    const categoriesList = document.getElementById('categoriesList');
+    const catNameInput = document.getElementById('catName');
+
+    function loadCategories() {
+      onValue(ref(db, 'categorias'), snapshot => {
+        const categories = snapshot.val() || {};
+        prodCatSelect.innerHTML = '<option value="">Selecciona una categoría...</option>';
+        categoriesList.innerHTML = '';
+        
+        if (Object.keys(categories).length === 0) {
+          prodCatSelect.innerHTML += '<option disabled>No hay categorías, crea una</option>';
+        } else {
+          Object.entries(categories).forEach(([id, catData]) => {
+            const option = document.createElement('option');
+            option.value = catData.name;
+            option.textContent = catData.name;
+            prodCatSelect.appendChild(option);
+            
+            const catItem = document.createElement('div');
+            catItem.className = 'category-item';
+            catItem.innerHTML = `
+              <span class="category-name">${catData.name}</span>
+              <div class="category-actions">
+                <button class="btn-delete" onclick="deleteCategory('${id}')">Eliminar</button>
+              </div>
+            `;
+            categoriesList.appendChild(catItem);
+          });
+        }
+      });
+    }
+
+    window.addCategory = async () => {
+      const catName = catNameInput.value.trim();
+      if (!catName) {
+        alert('Por favor ingresa un nombre de categoría');
+        return;
+      }
+      
+      // Verificar que no exista una categoría con el mismo nombre
+      const snapshot = await get(ref(db, 'categorias'));
+      const categories = snapshot.val() || {};
+      const exists = Object.values(categories).some(cat => cat.name.toLowerCase() === catName.toLowerCase());
+      
+      if (exists) {
+        alert('Esta categoría ya existe');
+        return;
+      }
+      
+      await set(push(ref(db, 'categorias')), { name: catName });
+      catNameInput.value = '';
+      loadCategories();
+    };
+
+    window.deleteCategory = async (id) => {
+      if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+        await set(ref(db, `categorias/${id}`), null);
+        loadCategories();
+      }
+    };
+
+    loadCategories();
+
+    // PRODUCTOS
+    let prodFiles = [];
+    const prodFileInput = document.getElementById('prodFileInput');
+    const addProdFileBtn = document.getElementById('addProdFileBtn');
+    const prodPreview = document.getElementById('prodPreview');
+    const prodProgress = document.getElementById('prodProgress');
+    const prodProgressInner = document.getElementById('prodProgressInner');
+    const prodFeedback = document.getElementById('prodFeedback');
+
+    addProdFileBtn.addEventListener('click', () => prodFileInput.click());
+    prodFileInput.addEventListener('change', e => {
+      Array.from(e.target.files).forEach(file => {
+        prodFiles.push(file);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const thumbnail = document.createElement('div');
+          thumbnail.className = 'thumbnail';
+          thumbnail.innerHTML = `
+            <img src="${event.target.result}" alt="${file.name}">
+            <button class="remove-btn" type="button">×</button>
+          `;
+          const removeBtn = thumbnail.querySelector('.remove-btn');
+          removeBtn.onclick = (evt) => {
+            evt.preventDefault();
+            const index = prodFiles.indexOf(file);
+            if (index > -1) prodFiles.splice(index, 1);
+            thumbnail.remove();
+          };
+          prodPreview.appendChild(thumbnail);
+        };
+        reader.readAsDataURL(file);
+      });
+      e.target.value = '';
+    });
+
+    window.uploadProduct = async () => {
+      prodFeedback.innerHTML = '';
+      const cat = document.getElementById('prodCat').value;
+      const name = document.getElementById('prodName').value.trim();
+      const desc = document.getElementById('prodDesc').value.trim();
+      const price = document.getElementById('prodPrice').value;
+      const sale = document.getElementById('prodSale').value === 'true';
+      if (!name || !price || prodFiles.length === 0) { 
+        prodFeedback.innerHTML = '<div class="error">Por favor completa todos los campos y añade al menos una imagen</div>'; 
+        return; 
+      }
+
+      prodProgress.style.display = 'block'; prodProgressInner.style.width = '0%';
+      const urls = [];
+      for (let i=0; i<prodFiles.length; i++) {
+        const file = prodFiles[i];
+        const storageRef = sRef(storage, `productos/${cat}/${name}_${i}_${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        urls.push(url);
+        prodProgressInner.style.width = `${((i+1)/prodFiles.length)*100}%`;
+      }
+      await set(ref(db, `productos/${cat}/${name}`), { name, desc, price: parseFloat(price), images: urls, sale, reserved: false });
+      prodFeedback.innerHTML = '<div class="success">Publicación creada exitosamente</div>';
+      prodFiles = []; prodPreview.innerHTML = ''; prodProgress.style.display = 'none';
+      document.getElementById('prodName').value = '';
+      document.getElementById('prodDesc').value = '';
+      document.getElementById('prodPrice').value = '';
+    };
+
+      // ===== Mostrar / Editar / Eliminar Productos =====
+      const productsList = document.getElementById('productsList');
+
+      function renderProductsTree(snapshotVal) {
+        productsList.innerHTML = '';
+        const data = snapshotVal || {};
+        const categories = Object.keys(data);
+        if (categories.length === 0) {
+          productsList.innerHTML = '<div class="empty-state"><p class="empty-state-text">No hay productos publicados.</p></div>';
+          return;
+        }
+        categories.forEach(cat => {
+          const catWrap = document.createElement('div');
+          catWrap.className = 'section';
+          catWrap.style.padding = '12px';
+          catWrap.style.marginBottom = '12px';
+          catWrap.innerHTML = `<h3 style="margin-bottom:10px;">${cat}</h3>`;
+          const list = document.createElement('div');
+          Object.entries(data[cat] || {}).forEach(([key, item]) => {
+            const itemEl = document.createElement('div');
+            itemEl.className = 'list-item';
+            itemEl.innerHTML = `
+              <p><strong>Nombre:</strong> ${item.name || key}</p>
+              <p class="prod-desc"><strong>Descripción:</strong> ${item.desc || ''}</p>
+              <p class="prod-price"><strong>Precio:</strong> ${item.price ? '$'+item.price : 'Consultar'}</p>
+              <p><strong>En oferta:</strong> ${item.sale ? 'Sí' : 'No'}</p>
+            `;
+
+            const btnWrap = document.createElement('div');
+            btnWrap.style.display = 'flex';
+            btnWrap.style.gap = '8px';
+            btnWrap.style.marginTop = '8px';
+
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Editar';
+            editBtn.style.background = '#4a90e2'; editBtn.style.color = 'white'; editBtn.style.padding = '8px'; editBtn.style.border = 'none'; editBtn.style.borderRadius = '6px'; editBtn.style.cursor = 'pointer';
+            editBtn.onclick = () => openEditProduct(cat, key, item, itemEl);
+
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'Eliminar';
+            delBtn.style.background = '#ef4444'; delBtn.style.color = 'white'; delBtn.style.padding = '8px'; delBtn.style.border = 'none'; delBtn.style.borderRadius = '6px'; delBtn.style.cursor = 'pointer';
+            delBtn.onclick = () => deleteProduct(cat, key);
+
+            btnWrap.appendChild(editBtn);
+            btnWrap.appendChild(delBtn);
+            itemEl.appendChild(btnWrap);
+            list.appendChild(itemEl);
+          });
+          catWrap.appendChild(list);
+          productsList.appendChild(catWrap);
+        });
+      }
+
+      // Listener para productos en DB (se actualiza en tiempo real)
+      onValue(ref(db, 'productos'), snapshot => {
+        renderProductsTree(snapshot.val());
+      }, err => {
+        console.error('Error cargando productos en admin:', err);
+        productsList.innerHTML = '<div class="error">Error cargando productos</div>';
+      });
+
+      function openEditProduct(cat, key, item, containerEl) {
+        // crear formulario simple inline
+        const form = document.createElement('div');
+        form.style.marginTop = '8px';
+        form.innerHTML = `
+          <label style="display:block;margin-bottom:6px;font-weight:600;">Descripción</label>
+          <input type="text" value="${(item.desc||'').replace(/"/g,'&quot;')}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #cbd5e0;border-radius:6px;">
+          <label style="display:block;margin-bottom:6px;font-weight:600;">Precio</label>
+          <input type="number" value="${item.price||''}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #cbd5e0;border-radius:6px;">
+          <label style="display:block;margin-bottom:6px;font-weight:600;">En oferta</label>
+          <select style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #cbd5e0;border-radius:6px;">
+            <option value="false">No</option>
+            <option value="true">Sí</option>
+          </select>
+          <div style="display:flex;gap:8px;">
+            <button style="flex:1;background:#16a34a;color:#fff;padding:8px;border:none;border-radius:6px;cursor:pointer;">Guardar</button>
+            <button style="flex:1;background:#6b7280;color:#fff;padding:8px;border:none;border-radius:6px;cursor:pointer;">Cancelar</button>
+          </div>
+        `;
+        const inputs = form.querySelectorAll('input, select');
+        inputs[0].value = item.desc || '';
+        inputs[1].value = item.price || '';
+        inputs[2].value = item.sale ? 'true' : 'false';
+
+        // evitar múltiples formularios
+        const existing = containerEl.querySelector('.edit-inline');
+        if (existing) existing.remove();
+        const wrapper = document.createElement('div'); wrapper.className = 'edit-inline';
+        wrapper.appendChild(form);
+        containerEl.appendChild(wrapper);
+
+        const saveBtn = form.querySelector('button');
+        const cancelBtn = form.querySelectorAll('button')[1];
+
+        cancelBtn.onclick = () => wrapper.remove();
+
+        saveBtn.onclick = async () => {
+          const newDesc = inputs[0].value.trim();
+          const newPrice = inputs[1].value !== '' ? parseFloat(inputs[1].value) : null;
+          const newSale = inputs[2].value === 'true';
+          const updateData = { desc: newDesc, sale: newSale };
+          if (newPrice !== null && !isNaN(newPrice)) updateData.price = newPrice;
+          try {
+            await update(ref(db, `productos/${cat}/${key}`), updateData);
+            wrapper.remove();
+          } catch (e) {
+            console.error('Error guardando cambios:', e);
+            alert('Error al guardar los cambios. Revisa la consola.');
+          }
+        };
+      }
+
+      async function deleteProduct(cat, key) {
+        if (!confirm(`Eliminar producto "${key}" de la categoría "${cat}"? Esta acción no se puede deshacer.`)) return;
+        try {
+          await set(ref(db, `productos/${cat}/${key}`), null);
+        } catch (e) {
+          console.error('Error eliminando producto:', e);
+          alert('No se pudo eliminar el producto. Revisa la consola.');
+        }
+      }
+
+    // SLIDER
+    let sliderFiles = [];
+    const sliderInput = document.getElementById('sliderInput');
+    const sliderExisting = document.getElementById('sliderExisting');
+    const sliderPreview = document.getElementById('sliderPreview');
+    const sliderProgress = document.getElementById('sliderProgress');
+    const sliderProgressInner = document.getElementById('sliderProgressInner');
+    const sliderFeedback = document.getElementById('sliderFeedback');
+
+    sliderInput.addEventListener('change', e => {
+      Array.from(e.target.files).forEach(file => {
+        sliderFiles.push(file);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const thumbnail = document.createElement('div');
+          thumbnail.className = 'thumbnail';
+          thumbnail.innerHTML = `
+            <img src="${event.target.result}" alt="${file.name}">
+            <button class="remove-btn" type="button">×</button>
+          `;
+          const removeBtn = thumbnail.querySelector('.remove-btn');
+          removeBtn.onclick = (evt) => {
+            evt.preventDefault();
+            const index = sliderFiles.indexOf(file);
+            if (index > -1) sliderFiles.splice(index, 1);
+            thumbnail.remove();
+          };
+          sliderPreview.appendChild(thumbnail);
+        };
+        reader.readAsDataURL(file);
+      });
+      e.target.value = '';
+    });
+
+    window.uploadSlider = async () => {
+      sliderFeedback.innerHTML = '';
+      if (sliderFiles.length === 0) { 
+        sliderFeedback.innerHTML = '<div class="error">Por favor selecciona al menos una imagen</div>'; 
+        return; 
+      }
+      sliderProgress.style.display = 'block'; sliderProgressInner.style.width = '0%';
+      for (let i=0; i<sliderFiles.length; i++) {
+        const file = sliderFiles[i];
+        const storageRef = sRef(storage, `slider/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        await set(push(ref(db, 'slider')), { url });
+        sliderProgressInner.style.width = `${((i+1)/sliderFiles.length)*100}%`;
+      }
+      sliderFeedback.innerHTML = '<div class="success">Slider actualizado exitosamente</div>';
+      sliderFiles = []; sliderPreview.innerHTML = ''; sliderProgress.style.display = 'none';
+    };
+
+    // Renderizar imágenes existentes del slider y permitir eliminarlas
+    function renderExistingSlider(snapshotVal) {
+      sliderExisting.innerHTML = '';
+      const data = snapshotVal || {};
+      Object.entries(data).forEach(([id, obj]) => {
+        const url = obj.url;
+        const thumbnail = document.createElement('div');
+        thumbnail.className = 'thumbnail';
+        thumbnail.innerHTML = `
+          <img src="${url}" alt="slider">
+          <button class="remove-btn" type="button">🗑</button>
+        `;
+        const removeBtn = thumbnail.querySelector('.remove-btn');
+        removeBtn.title = 'Eliminar imagen del slider';
+        removeBtn.onclick = async (evt) => {
+          evt.preventDefault();
+          if (!confirm('¿Eliminar esta imagen del slider?')) return;
+          try {
+            await set(ref(db, `slider/${id}`), null);
+          } catch (e) {
+            console.error('Error eliminando entrada DB del slider:', e);
+          }
+          try {
+            const parts = url.split('/o/');
+            if (parts.length > 1) {
+              const pathAndQuery = parts[1].split('?')[0];
+              const path = decodeURIComponent(pathAndQuery);
+              await deleteObject(sRef(storage, path));
+            }
+          } catch (e) {
+            console.warn('No se pudo eliminar el archivo en storage (posible token/ruta):', e);
+          }
+          thumbnail.remove();
+        };
+        sliderExisting.appendChild(thumbnail);
+      });
+    }
+
+    // Listener para los items del slider en la base de datos
+    onValue(ref(db, 'slider'), snapshot => {
+      renderExistingSlider(snapshot.val());
+    }, err => {
+      console.error('Error cargando slider en admin:', err);
+    });
+
+    // RESERVAS
+    const resList = document.getElementById('resList');
+    onValue(ref(db, 'reservas'), snapshot => {
+      resList.innerHTML = '';
+      const data = snapshot.val() || {};
+      Object.entries(data).forEach(([id, r]) => {
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.innerHTML = `
+          <p><strong>Nombre:</strong> ${r.customerName}</p>
+          <p><strong>Teléfono:</strong> ${r.customerPhone}</p>
+          <p><strong>Email:</strong> ${r.customerEmail}</p>
+          <p><strong>Estado:</strong> <span class="status-badge ${r.status === 'comprada' ? 'status-completed' : 'status-pending'}">${r.status === 'comprada' ? 'Completada' : 'Pendiente'}</span></p>
+          <p class="product-info"><strong>Producto:</strong> Cargando...</p>
+        `;
+
+        // Obtener información del producto
+        const productRef = ref(db, `productos/${r.productCategory}/${r.productKey}`);
+        get(productRef).then(productSnapshot => {
+          const productData = productSnapshot.val();
+          const productInfo = div.querySelector('.product-info');
+          if (productData) {
+            productInfo.innerHTML = `
+              <strong>Producto:</strong> ${productData.name}<br>
+              <strong>Descripción:</strong> ${productData.desc || 'Sin descripción'}<br>
+              <strong>Precio:</strong> $${productData.price}<br>
+              <strong>En Oferta:</strong> ${productData.sale ? 'Sí' : 'No'}
+            `;
+          } else {
+            productInfo.textContent = 'Producto no encontrado';
+          }
+        }).catch(error => {
+          console.error('Error al obtener el producto:', error);
+          div.querySelector('.product-info').textContent = 'Error al cargar el producto';
+        });
+
+        const btn = document.createElement('button');
+        btn.className = 'mark-comprado-btn';
+        btn.textContent = r.status === 'comprada' ? 'Completada' : 'Marcar como Completada';
+        btn.disabled = r.status === 'comprada';
+        btn.onclick = async () => {
+          await update(ref(db, `reservas/${id}`), { status: 'comprada' });
+          await update(ref(db, `productos/${r.productCategory}/${r.productKey}`), { reserved: true });
+          btn.textContent = 'Completada';
+          btn.disabled = true;
+        };
+        div.appendChild(btn);
+        resList.appendChild(div);
+      });
+    });
+  </script>
+</body>
+</html>
