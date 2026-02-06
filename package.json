@@ -1,0 +1,14 @@
+{
+  "name": "jb-ceramica-asistente",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "openai": "^4.60.0"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^2.0.0"
+  }
+}

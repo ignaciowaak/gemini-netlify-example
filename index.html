@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jb ceramica - Tienda Oficial</title>
+  <link rel="icon" href="0.png" type="0.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ====== (MANTUVE TODO TU CSS ORIGINAL) ====== */
+    /* Reset + Variables */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --primary:#6A6352;
+      --secondary:#D5CCAB;
+      --accent:#A3A289;
+      --dark-accent:#878568;
+      --dark-primary:#505143;
+      --white:#fff;
+      --black:#000;
+      --gray-light:#fafaf9;
+      --gray-dark:#2d2a24;
+      --brand:#6A6352;
+      --reserved-bg: #878568;
+      --transition:.28s ease;
+      --font-heading: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      --base-font-size: 16px;
+    }
+
+    body { 
+      font-family: var(--font-body);
+      font-size: var(--base-font-size);
+      color: var(--gray-dark); 
+      background: var(--white); 
+      line-height: 1.58; 
+      min-width: 320px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Header */
+    header {
+      position: fixed; 
+      top:0; 
+      left:0; 
+      right:0;
+      background: rgba(250, 250, 249, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(106, 99, 82, 0.15);
+      color:var(--gray-dark);
+      height:70px; 
+      display:flex; 
+      align-items:center; 
+      justify-content:space-between;
+      padding:0 30px; 
+      z-index:1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 56px;
+      background: transparent; /* removed glass */
+      border: none; /* removed border */
+      border-radius: 0;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      position: absolute; /* center without changing header layout */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1101;
+    }
+    .logo img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+      width:48px;
+      height:48px;
+      padding:6px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:8px;
+      transition: background-color 160ms ease, transform 160ms ease;
+    }
+    .menu-toggle:hover { background: rgba(106,99,82,0.06); }
+    .hamburger {
+      width:22px;
+      height:2px;
+      background: var(--gray-dark);
+      display:block;
+      position:relative;
+      border-radius:2px;
+      transition: background 220ms ease;
+    }
+    .hamburger::before, .hamburger::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: inherit;
+      border-radius:2px;
+      transition: transform 260ms cubic-bezier(.22,1,.36,1), top 260ms ease, opacity 180ms ease;
+    }
+    .hamburger::before { top: -7px; }
+    .hamburger::after { top: 7px; }
+    .menu-toggle.active .hamburger { background: transparent; }
+    .menu-toggle.active .hamburger::before { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.active .hamburger::after { transform: translateY(-7px) rotate(-45deg); }
+    /* El nav estará oculto por defecto y se mostrará solo cuando tenga la clase .open
+       Esto mantiene las categorías dentro del menú y evita mostrarlas fuera */
+    nav {
+      align-items:center;
+      gap:20px;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-6px);
+      padding: 0 12px;
+      transition: max-height 420ms cubic-bezier(.22,1,.36,1), opacity 260ms ease, transform 260ms ease, padding 260ms ease;
+      z-index: 1100;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+    }
+    nav a { 
+      color: var(--gray-dark); 
+      font-size: .9rem; 
+      text-transform: none; 
+      position: relative; 
+      text-decoration: none;
+      font-weight: 600;
+      font-family: var(--font-heading);
+      letter-spacing: 0.4px;
+      transition: color var(--transition), background-color var(--transition);
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+    nav a:hover { color:var(--primary); }
+
+    /* Mostrar menú desplegable animado también en escritorio cuando tenga la clase .open */
+    nav.open {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: rgba(250, 250, 249, 0.98);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      flex-direction: column;
+      padding: 18px 24px;
+      gap: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      z-index: 1200;
+      overflow: hidden;
+      max-height: 520px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      transition: max-height 420ms cubic-bezier(.22,1,.36,1), opacity 260ms ease, transform 260ms ease, padding 260ms ease;
+    }
+    /* Cuando no está abierto en escritorio, mantener su layout inline (no interfiere) */
+    @media (min-width: 601px) {
+      nav.open { display: flex; }
+    }
+
+    /* Carrito */
+    .cart-icon {
+      margin-left: auto;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+    
+    .cart-icon:hover {
+      background: rgba(106, 99, 82, 0.1);
+    }
+    
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--primary);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Modal Carrito */
+    #cartModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3500;
+      padding: 15px;
+    }
+
+    #cartModal.open {
+      display: flex;
+    }
+
+    .cart-modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .cart-modal-content h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--gray-dark);
+    }
+
+    .cart-modal-content .close-cart {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 28px;
+      color: #aaa;
+    }
+
+    .cart-modal-content .close-cart:hover {
+      color: var(--gray-dark);
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      border: 1px solid #e8ecf1;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: 600;
+      color: var(--gray-dark);
+      margin-bottom: 4px;
+    }
+
+    .cart-item-price {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 10px;
+    }
+
+    .cart-item-qty button {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 1px solid #cbd5e0;
+      background: white;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 600;
+      color: var(--gray-dark);
+      margin: 0;
+      transition: all var(--transition);
+    }
+
+    .cart-item-qty button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .cart-item-remove {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      margin: 0;
+      transition: all var(--transition);
+    }
+
+    .cart-item-remove:hover {
+      background: #dc2626;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #718096;
+    }
+
+    .cart-total {
+      border-top: 2px solid #e8ecf1;
+      padding-top: 20px;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: right;
+      color: var(--gray-dark);
+    }
+
+    .cart-checkout {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 20px;
+      transition: all var(--transition);
+    }
+
+    .cart-checkout:hover {
+      background: var(--dark-primary);
+    }
+
+    @media (max-width: 600px) {
+      .menu-toggle {
+        display: block;
+      }
+      nav {
+        /* ocultar con max-height para permitir transiciones suaves */
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(250, 250, 249, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 0 12px;
+        border-bottom: 1px solid rgba(106, 99, 82, 0.1);
+        gap: 12px;
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: max-height 420ms cubic-bezier(.22,1,.36,1), opacity 260ms ease, transform 260ms ease, padding 260ms ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      }
+      nav.open {
+        max-height: 520px; /* suficiente para mostrar enlaces */
+        opacity: 1;
+        transform: translateY(0);
+        padding: 20px 12px;
+      }
+      #categoriesNav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      #categoriesNav a {
+        padding: 12px;
+        border-radius: 6px;
+        background: rgba(106, 99, 82, 0.05);
+        transition: all var(--transition);
+      }
+      #categoriesNav a:hover {
+        background: rgba(106, 99, 82, 0.15);
+      }
+      #categoriesNav a.active {
+        background: var(--primary);
+        color: white;
+      }
+      .cart-icon {
+        padding: 12px;
+        border-radius: 6px;
+        background: var(--primary);
+        color: white;
+        width: 100%;
+        justify-content: center;
+        border: none;
+      }
+    }
+
+    /* Dropdown */
+    .has-sub { cursor:pointer; position:relative; }
+    .submenu {
+      position:absolute; 
+      top:100%; 
+      left:0; 
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      color:var(--gray-dark);
+      min-width:150px; 
+      display:none; 
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+      z-index: 1100; 
+      border-top: 3px solid var(--primary);
+      border-radius: 4px;
+    }
+    .submenu a { 
+      display:block; 
+      padding:10px 15px; 
+      white-space:nowrap; 
+      color: var(--gray-dark); 
+      font-size: 0.85rem; 
+    }
+    .submenu a:hover { background-color: var(--gray-light); }
+    .has-sub:hover .submenu { display:block; }
+
+    /* Hero slider */
+    .hero { 
+      position:relative; 
+      overflow:hidden; 
+      height:70vh; 
+      margin-top:70px; 
+      background: linear-gradient(135deg, #fafaf9 0%, #f5f3f0 100%); 
+    }
+    .slides { 
+      display:flex; 
+      height:100%; 
+      transition:transform 0.72s cubic-bezier(.22,1,.36,1); 
+      will-change: transform;
+    }
+    .slide {
+      flex-shrink: 0;
+      width: 100%; /* Esto se ajustará en JS */
+      background: center/cover no-repeat;
+      background-size: cover;
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      text-align: center; 
+      padding: 20px;
+      transform-origin: center center;
+      transition: transform 0.9s cubic-bezier(.22,1,.36,1), background-position 0.9s ease;
+    }
+    .slide.active { transform: scale(1.03); }
+    /* Caption debajo del slider */
+    .slide-caption {
+      text-align: center;
+      margin-top: 14px;
+      font-family: var(--font-heading);
+      color: var(--gray-dark);
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 12px;
+      opacity: 1;
+      transition: opacity 360ms ease;
+    }
+    .slide-caption.fade-out { opacity: 0; }
+    /* Sección de dirección / mapa */
+    .map-section {
+      text-align: center;
+      padding: 28px 12px;
+      background: linear-gradient(180deg, rgba(250,250,249,0.6), rgba(245,243,240,0.6));
+      border-top: 1px solid rgba(106,99,82,0.06);
+      border-bottom: 1px solid rgba(106,99,82,0.06);
+      margin-top: 18px;
+    }
+    .map-card {
+      display: inline-block;
+      position: relative;
+      max-width: 920px;
+      width: 100%;
+      background: var(--white);
+      padding: 14px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .map-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      object-fit: cover;
+      margin-bottom: 12px;
+    }
+    .map-label {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(255,255,255,0.85);
+      color: var(--gray-dark);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      pointer-events: none;
+      letter-spacing: 0.2px;
+    }
+    .map-cta {
+      display: inline-block;
+      background: var(--brand);
+      color: var(--white);
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(106,99,82,0.12);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+    .map-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(106,99,82,0.18); }
+
+    /* Sección: Sobre este catálogo */
+    .about-section {
+      background: linear-gradient(180deg, #fffaf8 0%, #fbfaf8 100%);
+      padding: 32px 14px;
+      text-align: center;
+      color: var(--gray-dark);
+    }
+    .about-card {
+      max-width: 980px;
+      margin: 0 auto;
+      background: transparent;
+      padding: 18px;
+      border-radius: 8px;
+    }
+    .about-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: var(--gray-dark);
+      font-weight: 700;
+    }
+    .about-card p { color: #555; font-size: 0.98rem; line-height:1.6; margin-bottom:8px; }
+
+    /* Botón flotante WhatsApp */
+    .whatsapp-fab {
+      position: fixed;
+      right: 16px;
+      bottom: 18px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 7000;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+      background: transparent;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .whatsapp-fab:active { transform: translateY(1px) scale(.98); }
+    .whatsapp-fab img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; display:block; }
+
+    @media (max-width: 480px) {
+      .whatsapp-fab { right: 12px; bottom: 12px; width: 48px; height: 48px; }
+      .whatsapp-fab img { width: 36px; height: 36px; }
+    }
+
+    .arrow {
+      position:absolute; 
+      top:50%; 
+      transform:translateY(-50%);
+      background:rgba(0,0,0,.4); 
+      color:var(--white); 
+      width:45px; 
+      height:45px;
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      cursor:pointer;
+      border-radius: 50%; 
+      transition: background-color var(--transition);
+    }
+    .arrow:hover { background:rgba(0,0,0,.7); }
+    .arrow.prev { left:15px; }
+    .arrow.next { right:15px; }
+
+    /* Productos */
+    .products-section-title { 
+      text-align: center; 
+      font-size: clamp(1.5rem, 3.5vw, 2rem); 
+      margin: 40px 20px 20px; 
+      color: var(--gray-dark);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .products {
+      width: 100%;
+      margin: 0 auto 30px;
+      padding: 0 10px;
+      display: grid;
+      gap: 15px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .card {
+      position:relative; 
+      border:1px solid rgba(106, 99, 82, 0.12); 
+      overflow:hidden;
+      border-radius: 6px;
+      transition:transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      display: flex; 
+      flex-direction: column; 
+      background-color: var(--white);
+    }
+    .card:hover { 
+      transform:translateY(-4px); 
+      box-shadow: 0 12px 32px rgba(106, 99, 82, 0.1); 
+      border-color: rgba(106, 99, 82, 0.25);
+    }
+    .card img { 
+      width:100%; 
+      display:block; 
+      aspect-ratio: 1 / 1; 
+      object-fit: cover; 
+      border-bottom: 1px solid #eee; 
+    }
+    .card .info { 
+      padding: 16px; 
+      background: var(--white); 
+      flex-grow: 1; 
+      display: flex; 
+      flex-direction: column; 
+    }
+    .info h3 { 
+      font-size: 1.05rem; 
+      margin-bottom: 8px; 
+      color: var(--gray-dark);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .info p { 
+      font-size: .9rem; 
+      color: #555; 
+      margin-bottom: 12px; 
+      flex-grow: 1; 
+      min-height: 3.8em; 
+      line-height: 1.45;
+    }
+    .desc {
+      font-size: .9rem;
+      color: #555;
+      margin-bottom: 12px;
+      line-height: 1.45;
+      white-space: normal;
+    }
+    .desc.short {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .desc.expanded {
+      display: block;
+      -webkit-line-clamp: unset;
+    }
+    .ver-mas {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      font-size: .9rem;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+    .info .price { 
+      font-weight: 700; 
+      font-size: 1.06rem; 
+      margin-top: auto; 
+      color: var(--dark-primary); 
+    }
+    .badge {
+      position:absolute; 
+      top:12px; 
+      left:12px;
+      background: rgba(106, 99, 82, 0.9); 
+      color:var(--white);
+      padding:6px 10px; 
+      font-size:.7rem; 
+      text-transform:uppercase; 
+      letter-spacing: .05em;
+      border-radius: 4px; 
+      font-weight: 700;
+      backdrop-filter: blur(5px);
+    }
+    .badge.reserved { background: rgba(135, 133, 104, 0.9); }
+
+    /* Footer */
+    footer {
+      background: var(--primary); 
+      color: var(--secondary); 
+      padding: 50px 20px 30px; 
+      margin-top: 60px;
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px; 
+      font-size: .95rem;
+      font-family: var(--font-body);
+    }
+    footer a { color:var(--secondary); text-decoration: none; transition: color var(--transition); }
+    footer a:hover { color: var(--white); text-decoration: underline; }
+    footer .brand { font-weight:700; font-size: 1.2rem; margin-bottom:15px; }
+    footer p { margin-bottom: 8px; }
+    footer .footer-column div:first-child { 
+      font-weight: 700; 
+      margin-bottom: 10px; 
+      text-transform: uppercase; 
+      font-size: 0.95rem;
+    }
+
+    /* Modal Reserva */
+    #modalReserva {
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%;
+      background: rgba(0,0,0,.65); 
+      display: none; 
+      align-items: center;
+      justify-content: center; 
+      z-index: 4000; /* Cambiado de 2000 a 4000 */
+      padding: 15px;
+    }
+    #modalReserva.open { display: flex; }
+    .modal-content-reserva {
+      background: var(--white); 
+      padding: 25px 30px; 
+      border-radius: 8px;
+      width: 100%; 
+      max-width: 420px; 
+      position: relative;
+      box-shadow: 0 5px 20px rgba(0,0,0,.3);
+    }
+    .modal-content-reserva .close-reserva {
+      position: absolute; 
+      top: 10px; 
+      right: 15px; 
+      cursor: pointer;
+      font-size: 2rem; 
+      color: #aaa; 
+      line-height: 1;
+    }
+    .modal-content-reserva .close-reserva:hover { color: var(--black); }
+    .modal-content-reserva h2 {
+      margin-top: 0; 
+      margin-bottom: 15px; 
+      font-size: 1.6rem; 
+      color: var(--gray-dark);
+    }
+    .modal-content-reserva p { 
+      font-size: .9rem; 
+      color: #555; 
+      margin-bottom: 20px; 
+      line-height: 1.5; 
+    }
+    .modal-content-reserva label {
+      display: block; 
+      margin-top: 15px; 
+      margin-bottom: 5px;
+      font-size: .9rem; 
+      font-weight: 500; 
+      color: var(--gray-dark);
+    }
+    .modal-content-reserva input[type="text"],
+    .modal-content-reserva input[type="tel"],
+    .modal-content-reserva input[type="email"] {
+      width: 100%; 
+      padding: 12px; 
+      border: 1px solid #ccc;
+      border-radius: 4px; 
+      font-size: .95rem;
+    }
+    .modal-content-reserva button[type="submit"] {
+      margin-top: 25px; 
+      width: 100%; 
+      padding: 12px;
+      background: var(--primary); 
+      color: var(--white); 
+      border: none;
+      border-radius: 4px; 
+      cursor: pointer; 
+      font-size: 1rem;
+      font-weight: 500; 
+      transition: background-color var(--transition);
+    }
+    .modal-content-reserva button[type="submit"]:hover { background: var(--dark-primary); }
+
+    /* Modal Detalle Producto */
+    #modalDetalle {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 90%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      padding: 20px;
+    }
+    #modalDetalle.open { display: flex; }
+    .modal-contenido-detalle {
+      position: relative;
+      background: var(--white);
+      max-width: 800vh;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-contenido-detalle .close-detalle {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 2rem;
+      color: #aaa;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .modal-contenido-detalle .close-detalle:hover { color: var(--black); }
+    .detalle-imagen-grande {
+      position: relative;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 310px;
+    }
+    .detalle-imagen-grande img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+    }
+    .detalle-flecha {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: var(--white);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      z-index: 5;
+    }
+    .detalle-flecha.prev { left: 10px; }
+    .detalle-flecha.next { right: 10px; }
+    .miniaturas {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: var(--gray-light);
+      overflow-x: auto;
+    }
+    .miniaturas img {
+      width: 60px; height: 60px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: border var(--transition);
+    }
+    .miniaturas img.selected {
+      border-color: var(--brand);
+    }
+
+    /* Asegurar visibilidad en pantallas pequeñas sin cambiar diseño */
+    html, body { overflow-x: auto; }
+
+    /* (tu código de overlays/promos/catalgos sigue igual) */
+    .promo-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .promo-overlay.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+    .promo-content {
+      position: relative;
+      background: #222;
+      color: #fff;
+      padding: 3.5rem;
+      border-radius: 20px;
+      max-width: 90%;
+      width: 470px;
+      text-align: center;
+      box-shadow: 0 40px 32px rgba(0,0,0,0.4);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .promo-overlay.visible .promo-content { transform: scale(1); }
+    .promo-content h3 { color: #ffd; margin-top: 0; margin-bottom: .9rem; font-size: 1rem; }
+    .promo-content p { margin-bottom: 1.5rem; font-size: 1.1rem; color: #fff; }
+
+    /* ====== NUEVAS REGLAS PARA EL AGENTE CHAT (minimalista) ====== */
+    .agent-fab {
+      position: fixed;
+      right: 16px;
+      bottom: 86px; /* encima del whatsapp */
+      z-index: 8000;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg,#ffffff,#f3f3f3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .agent-fab:active { transform: translateY(1px); }
+    .agent-fab svg { width:22px; height:22px; display:block; }
+
+    /* Chat modal (mini) */
+    .agent-modal {
+      position: fixed;
+      right: 12px;
+      bottom: 80px;
+      width: 92%;
+      max-width: 380px;
+      height: 64vh;
+      max-height: 680px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      z-index: 9001;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .agent-modal.open { display: flex; }
+    .agent-modal .header {
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      background: linear-gradient(90deg, #fff, #fafafa);
+    }
+    .agent-modal .header .title { font-weight:700; color:var(--gray-dark); font-size:15px; }
+    .agent-modal .messages {
+      padding: 12px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      background: linear-gradient(180deg,#fff,#fbfbfb);
+      flex:1;
+    }
+    .agent-bubble { max-width:80%; padding:8px 12px; border-radius:10px; line-height:1.3; font-size:14px; color:#222; }
+    .agent-bubble.user { align-self:flex-end; background:#f1f5f9; border:1px solid rgba(0,0,0,0.04); }
+    .agent-bubble.ai { align-self:flex-start; background:#f8f8ff; border:1px solid rgba(0,0,0,0.04); }
+
+    .agent-composer {
+      display:flex;
+      gap:8px;
+      padding:10px;
+      border-top:1px solid rgba(0,0,0,0.06);
+      align-items:center;
+      background:#fff;
+    }
+    .agent-composer textarea {
+      flex:1; min-height:44px; max-height:120px; resize:none; padding:8px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.06);
+      font-size:14px; font-family:var(--font-body);
+    }
+    .agent-composer .send-btn {
+      min-width:44px; height:44px; border-radius:8px; border:none; background:var(--brand); color:white; cursor:pointer; padding:0 12px; font-weight:700;
+    }
+    .agent-composer .mic-btn { width:44px; height:44px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+
+    @media (min-width: 900px) {
+      .agent-modal { right: 28px; bottom: 86px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- (Carrito eliminado: el flujo ahora usa reserva/compra directa en detalle de producto) -->
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="0.png" alt="Logo">
+    </div>
+    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="hamburger" aria-hidden="true"></span>
+    </button>
+    <nav id="menu" class="hidden">
+      <div id="categoriesNav"></div>
+    </nav>
+  </header>
+
+  <!-- Hero Slider -->
+  <section class="hero">
+    <div class="slides" id="slidesContainer"></div>
+    <div class="arrow prev" id="prevSlide">❮</div>
+    <div class="arrow next" id="nextSlide">❯</div>
+  </section>
+
+  <div id="slideCaption" class="slide-caption" aria-live="polite"></div>
+
+  <!-- Productos -->
+  <h2 class="products-section-title"></h2>
+  <section class="products" id="productsContainer"></section>
+
+  <!-- Sección: Dirección / Mapa (edita `src` y `href` manualmente) -->
+  <section class="map-section">
+    <div class="map-card">
+      <div class="map-label">Acá nos encontrás</div>
+      <!-- Cambia el atributo src por la imagen que subirás manualmente -->
+      <img id="mapImage" src="5.png" alt="Ubicación en Google Maps">
+      <!-- Cambia el href por tu enlace de Google Maps; se abrirá en nueva pestaña -->
+      <a id="mapLink" class="map-cta" href="https://maps.app.goo.gl/VpG4G4e4brVQ133u6" target="_blank" rel="noopener">Ver dirección en Google Maps</a>
+    </div>
+  </section>
+
+  <!-- Sección: Sobre este catálogo -->
+  <section class="about-section" aria-labelledby="aboutTitle">
+    <div class="about-card">
+      <h3 id="aboutTitle">Sobre este catálogo</h3>
+      <p>Esta página funciona como un catálogo exclusivo para mostrar bizcochos de cerámica. Aquí puedes ver las piezas disponibles y ponerte en contacto con las persona que las venden.</p>
+      <p>Todo lo que aparece en este catálogo son bizcochos: el objetivo es exhibirlos y facilitar la comunicación entre compradores y la vendedora. Si deseas comprar o reservar una pieza, usa los botones de contacto o reserva en la ficha del producto.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-column">
+      <div class="brand">JB ceramica</div>
+      <p>© <span id="currentYear"></span> jb ceramicaa Argentina. Todos los derechos reservados.</p>
+      <p>las mejores piezas</p>
+    </div>
+    <div class="footer-column">
+      <div>Cliente</div>
+      <a href="#">Ayuda y Contacto</a><br>
+      <div class="footer-column">
+        <div>Redes Sociales</div>
+        <a href="https://www.instagram.com/jb.ceramicaa/" target="_blank">Instagram</a><br>
+        <a href="https://api.whatsapp.com/send/?phone=542233390981&text&type=phone_number&app_absent=0" target="_blank">WhatsApp</a><br>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Reserva -->
+  <div id="modalReserva">
+    <div class="modal-content-reserva">
+      <span class="close-reserva" id="closeModalReservaButton">×</span>
+      <h2 id="modalReservaTitle">Reservar Producto</h2>
+      <p>Al reservar este producto, nos contactaremos contigo para confirmar los detalles y coordinar el pago/envío.</p>
+      <form id="reservationForm">
+        <input type="hidden" id="resProductCategory">
+        <input type="hidden" id="resProductKey">
+        <input type="hidden" id="resProductNameInput">
+        <label for="resName">Nombre Completo:</label>
+        <input type="text" id="resName" required>
+        <label for="resPhone">Teléfono (con código de área):</label>
+        <input type="tel" id="resPhone" required>
+        <label for="resEmail">Correo Electrónico:</label>
+        <input type="email" id="resEmail" required>
+        <button type="submit">Confirmar Reserva</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Detalle Producto -->
+  <div id="modalDetalle">
+    <div class="modal-contenido-detalle">
+      <span class="close-detalle" id="closeDetalle">×</span>
+      <div class="detalle-imagen-grande" id="detalleImagenGrande">
+        <div class="detalle-flecha prev" id="detallePrev">❮</div>
+        <img src="" alt="Detalle Producto" id="detalleImagen">
+        <div class="detalle-flecha next" id="detalleNext">❯</div>
+      </div>
+      <div class="miniaturas" id="miniaturasContainer"></div>
+      <div class="detalle-info" style="padding: 20px;">
+        <h3 id="detalleNombre" style="margin-bottom:8px;"></h3>
+        <p id="detalleDesc" style="margin-bottom:12px;"></p>
+        <div id="detallePrice" style="font-weight:700; font-size:1.2rem;"></div>
+        <input type="hidden" id="detalleCategory" value="">
+        <input type="hidden" id="detalleKey" value="">
+        <button id="reserveButton" style="margin-top:15px; padding:10px 15px; background:var(--brand); color:var(--white); border:none; border-radius:4px; cursor:pointer;">Reservar este producto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso de catálogo (minimalista) -->
+  <style>
+    #catalogWarningOverlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.48);z-index:9000;visibility:hidden;opacity:0;transition:opacity 220ms ease}
+    #catalogWarningOverlay.open{visibility:visible;opacity:1}
+    .catalog-warning{background:#fff;padding:22px;border-radius:12px;max-width:560px;width:90%;text-align:center;box-shadow:0 18px 40px rgba(0,0,0,0.12)}
+    .catalog-warning h2{margin:0 0 8px;font-size:1.05rem;color:var(--gray-dark);font-weight:700}
+    .catalog-warning p{margin:0 0 14px;color:#444;line-height:1.5}
+    .catalog-warning .btn{display:inline-block;background:var(--brand);color:#fff;padding:10px 16px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+    .catalog-warning .muted{font-size:0.88rem;color:#777;margin-top:10px}
+  </style>
+
+  <div id="catalogWarningOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="catalog-warning">
+      <h2>Importante — Catálogo</h2>
+      <p>Esta web es un catálogo exclusivo para personas interesadas en comprar bizcochos de cerámica. No es el sitio principal de JB Cerámica.</p>
+      <div><button id="catalogWarnOk" class="btn">Entendido</button></div>
+      <div class="muted">Puedes marcar "Entendido" para continuar.</div>
+    </div>
+  </div>
+
+  <div class="promo-overlay" id="promo-popup-overlay">
+      <div class="promo-content">
+          <button class="promo-close-btn" id="promo-close-btn">&times;</button>
+          <h3>¡Buenos dias!</h3>
+          <p>Hoy los envios son a domicilio y gratis</p>
+      
+          <img src="B.png" alt="Tomamos pedidos 📦" class="promo-img" id="promo-img">
+          </div>
+  </div>
+
+  <!-- ===== BOTÓN AGENTE + CHAT MINIMALISTA ===== -->
+  <!-- Botón agente (encima del WhatsApp) -->
+  <button id="agentBtn" class="agent-fab" aria-label="Abrir chat de la guía" title="Chatear con la guía">
+    <!-- SVG chat icon (inline para no depender de assets) -->
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M4 4h16v10H5.17L4 15.17V4z" stroke="#333" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="8.5" cy="9.5" r="0.5" fill="#333"/>
+      <circle cx="12" cy="9.5" r="0.5" fill="#333"/>
+      <circle cx="15.5" cy="9.5" r="0.5" fill="#333"/>
+    </svg>
+  </button>
+
+  <!-- Ventana de chat (inicialmente oculta) -->
+  <div id="agentModal" class="agent-modal" role="dialog" aria-hidden="true" aria-label="Chat con la guía">
+    <div class="header">
+      <div class="title">Guía — Chat</div>
+      <button id="agentClose" aria-label="Cerrar chat" style="background:none;border:none;font-size:18px;cursor:pointer;">×</button>
+    </div>
+    <div id="agentMessages" class="messages" aria-live="polite"></div>
+    <div class="agent-composer">
+      <button id="agentMic" class="mic-btn" title="Dictar">🎤</button>
+      <textarea id="agentPrompt" placeholder="Escribí tu mensaje..." rows="1" aria-label="Mensaje"></textarea>
+      <button id="agentSend" class="send-btn">Enviar</button>
+    </div>
+  </div>
+
+  <!-- Botón flotante de WhatsApp: cambia `href` y `src` por tu link y logo -->
+  <a id="whatsappBtn" class="whatsapp-fab" href="https://api.whatsapp.com/send/?phone=542233390981&text&type=phone_number&app_absent=0" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <img id="whatsappImg" src="4.png.png" alt="WhatsApp">
+  </a>
+
+  <script type="module">
+    // Importaciones de Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhz1XoprhhrHyYfuAdIYGMJxm5UsDO-4",
+      authDomain: "the-pic-c437e.firebaseapp.com",
+      databaseURL: "https://the-pic-c437e-default-rtdb.firebaseio.com",
+      projectId: "the-pic-c437e",
+      storageBucket: "the-pic-c437e.appspot.com",
+      messagingSenderId: "750954597180",
+      appId: "1:750954597180:web:fc586d73d852ed5e17ec39"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Año actual en footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    /* ===== HERO SLIDER ===== */
+    const slidesEl = document.getElementById('slidesContainer');
+    const nextSlideButton = document.getElementById('nextSlide');
+    const prevSlideButton = document.getElementById('prevSlide');
+    let currentSlideIndex = 0;
+    let totalSlides = 0;
+    let slideAutoPlayInterval;
+    const slidePhrases = [
+      "Cree cosas que te inspiren cada día.",
+      "La paciencia y el trabajo crean belleza.",
+      "Hazlo con pasión o no lo hagas.",
+      "Un pequeño paso hoy, una gran obra mañana.",
+      "La creatividad es el corazón del oficio.",
+      "Encuentra belleza en lo sencillo.",
+      "Lo hecho a mano habla con el alma.",
+      "Persiste: las buenas ideas se pulen con tiempo.",
+      "Cambia tu mundo con un acto pequeño.",
+      "Cada pieza cuenta una historia única."
+    ];
+    const captionEl = document.getElementById('slideCaption');
+
+    function renderSlides(slideData) {
+      slidesEl.innerHTML = '';
+      let loaded = Array.isArray(slideData) ? slideData : (slideData ? Object.values(slideData) : []);
+      totalSlides = loaded.length;
+      if (totalSlides > 0) {
+        slidesEl.style.width = `${totalSlides * 100}%`;
+        loaded.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'slide';
+          div.style.backgroundImage = `url('${item.url}')`;
+          div.style.width = `${100 / totalSlides}%`; // Ajuste para que cada slide ocupe el espacio correcto
+          // No insertar título grande en la slide; el caption se muestra debajo
+          div.innerHTML = '';
+          slidesEl.appendChild(div);
+        });
+        updateSliderTransform();
+        // marcar la primera como activa y poner caption
+        updateActiveSlideClass();
+        updateSlideCaption();
+        startSliderAutoplay();
+      } else {
+        slidesEl.style.width = '100%';
+        slidesEl.innerHTML = `<div class="slide" style="background-color: var(--gray-dark); width: 100%;"><h1>No hay slides disponibles</h1></div>`;
+      }
+    }
+    function updateSliderTransform() {
+      slidesEl.style.transform = `translateX(-${currentSlideIndex * (100 / totalSlides)}%)`;
+      updateActiveSlideClass();
+      updateSlideCaption();
+    }
+    function updateActiveSlideClass() {
+      const children = Array.from(slidesEl.children || []);
+      children.forEach((el, idx) => el.classList.toggle('active', idx === currentSlideIndex));
+    }
+    function updateSlideCaption() {
+      if (!captionEl) return;
+      if (totalSlides === 0) { captionEl.textContent = ''; return; }
+      // efecto fade simple
+      captionEl.classList.add('fade-out');
+      setTimeout(() => {
+        const phrase = slidePhrases[currentSlideIndex % slidePhrases.length] || '';
+        captionEl.textContent = phrase;
+        captionEl.classList.remove('fade-out');
+      }, 220);
+    }
+    function moveSlide(dir) {
+      currentSlideIndex = (currentSlideIndex + dir + totalSlides) % totalSlides;
+      updateSliderTransform();
+    }
+    function startSliderAutoplay() {
+      clearInterval(slideAutoPlayInterval);
+      if (totalSlides > 1) slideAutoPlayInterval = setInterval(() => moveSlide(1), 5000);
+    }
+    nextSlideButton.addEventListener('click', () => { moveSlide(1); startSliderAutoplay(); });
+    prevSlideButton.addEventListener('click', () => { moveSlide(-1); startSliderAutoplay(); });
+    onValue(ref(db, 'slider'), snap => {
+      const data = snap.val();
+      console.log("Datos del slider:", data); // Para depurar
+      renderSlides(data);
+    }, err => {
+      console.error("Error cargando slides:", err);
+      slidesEl.innerHTML = `<div class="slide" style="background-color: var(--gray-dark); width: 100%;"><h1>Error al cargar slides</h1></div>`;
+    });
+
+    /* ===== PRODUCTOS + MODAL DETALLE ===== */
+    const productsContainer = document.getElementById('productsContainer');
+    let categories = ['Hombre', 'Mujer', 'Niños', 'Ofertas']; // Categorías por defecto
+    const renderedCards = {};
+
+    // Manejo de carga de productos: mostrar todos al iniciar, permitir filtrar por categoría
+    const productUnsubs = {};
+
+    function clearProducts() {
+      productsContainer.innerHTML = '';
+      for (const id in renderedCards) delete renderedCards[id];
+    }
+
+    function loadAllProducts() {
+      // limpiar suscripciones previas
+      Object.values(productUnsubs).forEach(fn => { try { fn(); } catch(e){} });
+      for (const k in productUnsubs) delete productUnsubs[k];
+      clearProducts();
+      categories.forEach(cat => {
+        productUnsubs[cat] = onValue(ref(db, `productos/${cat}`), snap => {
+          const data = snap.val() || {};
+          Object.keys(data).forEach(key => {
+            const item = data[key];
+            const id = `${cat}-${key}`;
+            const newCard = renderSingleProduct(cat, key, item);
+            if (renderedCards[id]) {
+              productsContainer.replaceChild(newCard, renderedCards[id]);
+            } else {
+              productsContainer.appendChild(newCard);
+            }
+            renderedCards[id] = newCard;
+          });
+        }, err => console.error(`Error cargando productos de ${cat}:`, err));
+      });
+    }
+
+    function loadProductsForCategory(cat) {
+      // limpiar suscripciones que no sean la seleccionada
+      Object.entries(productUnsubs).forEach(([c, fn]) => {
+        if (c !== cat && typeof fn === 'function') {
+          try { fn(); } catch (e) {}
+          delete productUnsubs[c];
+        }
+      });
+      clearProducts();
+      // suscribirse solo a la categoría seleccionada
+      productUnsubs[cat] = onValue(ref(db, `productos/${cat}`), snap => {
+        const data = snap.val() || {};
+        if (Object.keys(data).length === 0) {
+          productsContainer.innerHTML = '<div class="empty-state"><p class="empty-state-text">No hay productos en esta categoría</p></div>';
+          return;
+        }
+        Object.keys(data).forEach(key => {
+          const item = data[key];
+          const id = `${cat}-${key}`;
+          const newCard = renderSingleProduct(cat, key, item);
+          productsContainer.appendChild(newCard);
+          renderedCards[id] = newCard;
+        });
+      }, err => console.error(`Error cargando productos de ${cat}:`, err));
+    }
+
+    // Mostrar todos los productos al iniciar
+    loadAllProducts();
+
+    // Modal detalle refs
+    const modalDetalle = document.getElementById('modalDetalle');
+    const detalleImagen = document.getElementById('detalleImagen');
+    const detalleNombre = document.getElementById('detalleNombre');
+    const detalleDesc   = document.getElementById('detalleDesc');
+    const detallePrice  = document.getElementById('detallePrice');
+    const detallePrev   = document.getElementById('detallePrev');
+    const detalleNext   = document.getElementById('detalleNext');
+    const miniaturasContainer = document.getElementById('miniaturasContainer');
+    const closeDetalle = document.getElementById('closeDetalle');
+    let detalleImages = [], currentDetalleIndex = 0;
+
+    function openDetalle(item, category, key, reserved) {
+      detalleImages = Array.isArray(item.images) && item.images.length
+        ? item.images
+        : [ item.url || 'https://via.placeholder.com/800' ];
+      currentDetalleIndex = 0;
+      detalleNombre.textContent = item.name;
+      detalleDesc.textContent   = item.desc;
+      detallePrice.textContent  = item.price ? '$'+Number(item.price).toLocaleString('es-AR') : 'Consultar';
+      document.getElementById('detalleCategory').value = category;
+      document.getElementById('detalleKey').value = key;
+      renderDetalle();
+      modalDetalle.classList.add('open');
+      const reserveButton = document.getElementById('reserveButton');
+      if (reserved) {
+        reserveButton.style.display = 'none';
+      } else {
+        reserveButton.style.display = 'block';
+        reserveButton.onclick = () => {
+          const name = document.getElementById('detalleNombre').textContent;
+          openModalReserva(category, key, name);
+        };
+      }
+    }
+    function renderDetalle() {
+      detalleImagen.src = detalleImages[currentDetalleIndex];
+      miniaturasContainer.innerHTML = '';
+      detalleImages.forEach((src, idx) => {
+        const img = document.createElement('img');
+        img.src = src;
+        if (idx === currentDetalleIndex) img.classList.add('selected');
+        img.addEventListener('click', () => { currentDetalleIndex = idx; renderDetalle(); });
+        miniaturasContainer.appendChild(img);
+      });
+    }
+    detallePrev.addEventListener('click', () => {
+      currentDetalleIndex = (currentDetalleIndex - 1 + detalleImages.length) % detalleImages.length;
+      renderDetalle();
+    });
+    detalleNext.addEventListener('click', () => {
+      currentDetalleIndex = (currentDetalleIndex + 1) % detalleImages.length;
+      renderDetalle();
+    });
+    closeDetalle.addEventListener('click', () => modalDetalle.classList.remove('open'));
+    modalDetalle.addEventListener('click', e => {
+      if (e.target === modalDetalle) modalDetalle.classList.remove('open');
+    });
+
+    function renderSingleProduct(category, key, item) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      let badge = '';
+      if (item.reserved) badge = '<div class="badge reserved">Comprado</div>';
+      else if (item.sale) badge = '<div class="badge">Oferta</div>';
+      const imgSrc = Array.isArray(item.images) && item.images.length ? item.images[0] : item.url || 'https://via.placeholder.com/300';
+      const priceText = item.price? '$'+Number(item.price).toLocaleString('es-AR'):'Consultar';
+      card.innerHTML = `
+        ${badge}
+        <img src="${imgSrc}" alt="${item.name}">
+        <div class="info">
+          <h3>${item.name||'Producto'}</h3>
+          <p class="desc short"></p>
+          <button type="button" class="ver-mas">VER MÁS</button>
+          <div class="price">${priceText}</div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button type="button" class="buy-btn" style="flex:1; padding:8px; background:var(--primary); color:white; border:none; border-radius:4px; cursor:pointer; font-size:13px; font-weight:600;">Comprar</button>
+          </div>
+        </div>
+      `;
+      // Rellenar y gestionar el truncado/expansión de la descripción
+      const pEl = card.querySelector('.desc');
+      const verBtn = card.querySelector('.ver-mas');
+      const fullDesc = item.desc || 'Descripción no disponible.';
+      const maxLen = 220; // límite de caracteres para el recorte inicial (segundo nivel de seguridad)
+      // Si la descripción es corta, mostrarla completa y ocultar el botón
+      if (!fullDesc || fullDesc.length <= maxLen) {
+        pEl.textContent = fullDesc;
+        if (verBtn) verBtn.style.display = 'none';
+      } else {
+        // Mostrar versión corta y habilitar botón
+        pEl.textContent = fullDesc;
+        verBtn.addEventListener('click', () => {
+          const isExpanded = pEl.classList.toggle('expanded');
+          if (isExpanded) {
+            pEl.classList.remove('short');
+            verBtn.textContent = 'VER MENOS';
+          } else {
+            pEl.classList.add('short');
+            verBtn.textContent = 'VER MÁS';
+          }
+        });
+      }
+      if (!item.reserved) {
+        const detailSection = card.querySelector('.info h3');
+        detailSection.style.cursor = 'pointer';
+        detailSection.addEventListener('click', () => openDetalle(item, category, key, item.reserved));
+        const buyBtn = card.querySelector('.buy-btn');
+        if (buyBtn) buyBtn.addEventListener('click', () => openDetalle(item, category, key, item.reserved));
+      }
+      return card;
+    }
+
+    // (Bloque de carga de productos manejado por el listener de 'categorias' arriba)
+
+    // Carrito eliminado: se usará el flujo de detalle/reserva para comprar
+
+    /* ===== CATEGORÍAS DINÁMICAS ===== */
+    const categoriesNav = document.getElementById('categoriesNav');
+    const menu = document.getElementById('menu');
+
+    function populateCategories(catList) {
+      categoriesNav.innerHTML = '';
+      catList.forEach(cat => {
+        const catElement = document.createElement('a');
+        catElement.href = '#';
+        catElement.textContent = cat;
+        catElement.style.textTransform = 'capitalize';
+        catElement.addEventListener('click', (e) => {
+          e.preventDefault();
+          // cerrar menú móvil
+          document.getElementById('menu').classList.remove('open');
+          // marcar activo
+          Array.from(categoriesNav.querySelectorAll('a')).forEach(a => a.classList.remove('active'));
+          catElement.classList.add('active');
+          // cargar productos de la categoría seleccionada
+          loadProductsForCategory(cat);
+        });
+        categoriesNav.appendChild(catElement);
+      });
+    }
+
+    // Cargar categorías desde Firebase o usar las por defecto
+    onValue(ref(db, 'categorias'), snapshot => {
+      const data = snapshot.val() || {};
+      const firebaseCategories = Object.values(data).map(cat => cat.name);
+      const catToShow = firebaseCategories.length > 0 ? firebaseCategories : categories;
+      categories = catToShow;
+      populateCategories(catToShow);
+      // recargar productos para reflejar nuevas categorías
+      loadAllProducts();
+    });
+
+    /* ===== MODAL RESERVA ===== */
+    const modalReserva = document.getElementById('modalReserva');
+    const closeModalReservaButton = document.getElementById('closeModalReservaButton');
+    const reservationForm = document.getElementById('reservationForm');
+    const modalReservaTitleEl = document.getElementById('modalReservaTitle');
+    const resProductCategoryInput = document.getElementById('resProductCategory');
+    const resProductKeyInput = document.getElementById('resProductKey');
+    const resProductNameInputHidden = document.getElementById('resProductNameInput');
+    const resNameInput = document.getElementById('resName');
+    const resPhoneInput = document.getElementById('resPhone');
+    const resEmailInput = document.getElementById('resEmail');
+
+    window.openModalReserva = function(category, productKey, productName) {
+      modalDetalle.classList.remove('open'); // Cerrar modal de detalle
+      modalReservaTitleEl.innerText = `Reservar: ${productName}`;
+      resProductCategoryInput.value = category;
+      resProductKeyInput.value = productKey;
+      resProductNameInputHidden.value = productName;
+      reservationForm.reset();
+      modalReserva.classList.add('open');
+    };
+
+    function closeModalReserva() {
+      modalReserva.classList.remove('open');
+    }
+    closeModalReservaButton.onclick = closeModalReserva;
+    modalReserva.addEventListener('click', e => {
+      if (e.target === modalReserva) closeModalReserva();
+    });
+
+    reservationForm.onsubmit = async function(event) {
+      event.preventDefault();
+      const productCategory = resProductCategoryInput.value;
+      const productKey = resProductKeyInput.value;
+      const productName = resProductNameInputHidden.value;
+      const customerName = resNameInput.value.trim();
+      const customerPhone = resPhoneInput.value.trim();
+      const customerEmail = resEmailInput.value.trim();
+
+      if (!customerName || !customerPhone || !customerEmail) {
+        alert('Por favor, completa todos los campos: Nombre, Teléfono y Correo.');
+        return;
+      }
+      if (!customerEmail.includes('@') || !customerEmail.includes('.')) {
+        alert('Por favor, ingresa un correo electrónico válido.');
+        return;
+      }
+      if (!/^[0-9\s+()-]*$/.test(customerPhone)) {
+        alert('Por favor, ingresa un número de teléfono válido.');
+        return;
+      }
+
+      const submitButton = reservationForm.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+
+      try {
+        await push(ref(db, 'reservas/'), {
+          productCategory,
+          productKey,
+          productName,
+          customerName,
+          customerPhone,
+          customerEmail,
+          timestamp: Date.now(),
+          status: 'pendiente'
+        });
+        closeModalReserva();
+        showOrderConfirmation();
+      } catch (error) {
+        console.error("Error al guardar la reserva:", error);
+        alert('Hubo un error al procesar tu reserva. Por favor, intenta de nuevo.');
+      } finally {
+        submitButton.disabled = false;
+      }
+    };
+
+    function showOrderConfirmation() {
+      const overlay = document.createElement('div');
+      overlay.id = 'orderConfirmation';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.background = 'rgba(0,0,0,0.6)';
+      overlay.style.zIndex = '5000';
+      const box = document.createElement('div');
+      box.style.background = 'white';
+      box.style.padding = '28px';
+      box.style.borderRadius = '10px';
+      box.style.maxWidth = '420px';
+      box.style.textAlign = 'center';
+      box.innerHTML = `
+        <h2 style="margin:0 0 12px; color:var(--gray-dark); font-family:var(--font-heading);">Tu pedido está en proceso</h2>
+        <p style="margin:0 0 18px;color:#555;">Gracias por tu compra. Pronto nos pondremos en contacto para coordinar el pago y envío.</p>
+        <button id="backHomeBtn" style="padding:10px 14px;border-radius:6px;background:var(--primary);color:white;border:none;cursor:pointer;font-weight:600;">Volver al inicio</button>
+      `;
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+      document.getElementById('backHomeBtn').addEventListener('click', () => {
+        overlay.remove();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    /* ===== MENÚ HAMBURGUESA ===== */
+    const menuToggle = document.querySelector('.menu-toggle');
+
+    menuToggle.addEventListener('click', () => {
+      const menuEl = document.getElementById('menu');
+      const isOpen = menuEl.classList.toggle('open');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // (scroll observer, popups, promo, etc. — mantiene tu lógica)
+    document.addEventListener('DOMContentLoaded', () => {
+      const containers = document.querySelectorAll('.container, .hero');
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      containers.forEach(container => {
+        const rect = container.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+          container.classList.add('is-visible');
+        } else {
+          observer.observe(container);
+        }
+      });
+
+      // Cerrar el menú al hacer clic en un enlace (útil en móvil)
+      const navLinks = document.querySelectorAll('#nav-list a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const navList = document.getElementById('nav-list');
+          if (navList && navList.classList.contains('show')) {
+            navList.classList.remove('show');
+          }
+        });
+      });
+
+      // Aviso de catálogo
+      const catalogOverlay = document.getElementById('catalogWarningOverlay');
+      const catalogOkBtn = document.getElementById('catalogWarnOk');
+      try {
+        if (localStorage.getItem('catalogWarningDismissed') !== '1') {
+          catalogOverlay.classList.add('open');
+          catalogOverlay.setAttribute('aria-hidden', 'false');
+        }
+      } catch (e) {}
+      if (catalogOkBtn) catalogOkBtn.addEventListener('click', () => {
+        catalogOverlay.classList.remove('open');
+        catalogOverlay.setAttribute('aria-hidden', 'true');
+        try { localStorage.setItem('catalogWarningDismissed', '1'); } catch (e){}
+      });
+
+      const promoOverlay = document.getElementById('promo-popup-overlay');
+      const promoImg = document.getElementById('promo-img');
+      const promoCloseBtn = document.getElementById('promo-close-btn');
+      promoOverlay.classList.add('visible');
+      promoImg.addEventListener('load', () => {
+        promoCloseBtn.classList.add('active');
+        promoCloseBtn.addEventListener('click', () => { promoOverlay.classList.remove('visible'); });
+      });
+      promoImg.addEventListener('error', () => {
+        promoCloseBtn.classList.add('active');
+        promoCloseBtn.addEventListener('click', () => { promoOverlay.classList.remove('visible'); });
+      });
+      if (promoImg.complete) promoImg.dispatchEvent(new Event('load'));
+    });
+
+    /* ====== AGENT CHAT: lógica minimalista (no rompe nada) ====== */
+    // Elementos
+    const agentBtn = document.getElementById('agentBtn');
+    const agentModal = document.getElementById('agentModal');
+    const agentClose = document.getElementById('agentClose');
+    const agentMessages = document.getElementById('agentMessages');
+    const agentPrompt = document.getElementById('agentPrompt');
+    const agentSend = document.getElementById('agentSend');
+    const agentMic = document.getElementById('agentMic');
+
+    // Pequeña historia local
+    const agentHistory = [];
+
+    function scrollAgentBottom() {
+      agentMessages.scrollTop = agentMessages.scrollHeight;
+    }
+
+    function appendAgentMessage({who = 'ai', text = ''}) {
+      const el = document.createElement('div');
+      el.className = 'agent-bubble ' + (who === 'user' ? 'user' : 'ai');
+      el.textContent = text;
+      agentMessages.appendChild(el);
+      scrollAgentBottom();
+      return el;
+    }
+
+    function appendAgentThinking() {
+      const el = document.createElement('div');
+      el.className = 'agent-bubble ai';
+      el.innerHTML = 'Pensando<span style="opacity:.6">...</span>';
+      agentMessages.appendChild(el);
+      scrollAgentBottom();
+      return el;
+    }
+
+    function openAgent() {
+      agentModal.classList.add('open');
+      agentModal.setAttribute('aria-hidden', 'false');
+      agentPrompt.focus();
+      // Agregar mensaje de bienvenida si no hay
+      if (agentHistory.length === 0) {
+        const welcome = 'Hola — soy la guía de JB Cerámica. Escribí o tocá el mic para dictar. ¿En qué te puedo ayudar?';
+        appendAgentMessage({who:'ai', text: welcome});
+        agentHistory.push({role:'assistant', content: welcome});
+      }
+    }
+    function closeAgent() {
+      agentModal.classList.remove('open');
+      agentModal.setAttribute('aria-hidden', 'true');
+    }
+
+    agentBtn.addEventListener('click', () => {
+      // si el modal está abierto, cerrarlo; si está cerrado, abrirlo
+      if (agentModal.classList.contains('open')) closeAgent(); else openAgent();
+    });
+    agentClose.addEventListener('click', closeAgent);
+
+    // Enviar al endpoint: usa mismo endpoint que venías usando
+    async function sendAgentMessage() {
+      const prompt = agentPrompt.value.trim();
+      if (!prompt) return;
+      appendAgentMessage({who:'user', text: prompt});
+      agentHistory.push({role:'user', content: prompt});
+      agentPrompt.value = '';
+      agentPrompt.focus();
+
+      const thinkingEl = appendAgentThinking();
+      try {
+        const res = await fetch('/.netlify/functions/asistente', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ prompt })
+        });
+        const data = await res.json();
+        if (data && data.response) {
+          thinkingEl.textContent = ''; // borrar "pensando"
+          thinkingEl.remove();
+          appendAgentMessage({who:'ai', text: data.response});
+          agentHistory.push({role:'assistant', content: data.response});
+        } else {
+          thinkingEl.textContent = 'Error: respuesta inválida';
+        }
+      } catch (err) {
+        thinkingEl.textContent = 'Error de red: ' + (err.message || err);
+      }
+      scrollAgentBottom();
+    }
+
+    agentSend.addEventListener('click', sendAgentMessage);
+    agentPrompt.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAgentMessage(); }
+    });
+
+    // --- Dictado (Web Speech API) para el agente ---
+    let agentRec = null;
+    let agentListening = false;
+    function setupAgentSpeech(){
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) { agentMic.style.display = 'none'; return; }
+      agentRec = new SpeechRecognition();
+      agentRec.lang = 'es-AR';
+      agentRec.interimResults = true;
+      let interim = '';
+      agentRec.addEventListener('start', () => { agentListening = true; agentMic.textContent = '🎙️'; agentMic.style.boxShadow = '0 6px 18px rgba(34,197,94,0.12)'; });
+      agentRec.addEventListener('end', () => { agentListening = false; agentMic.textContent = '🎤'; agentMic.style.boxShadow = 'none'; });
+      agentRec.addEventListener('result', (ev) => {
+        interim = Array.from(ev.results).map(r => r[0].transcript).join('');
+        agentPrompt.value = interim;
+        if (ev.results[0].isFinal) { sendAgentMessage(); }
+      });
+      agentRec.addEventListener('error', (err) => {
+        console.warn('Agent speech error', err);
+      });
+    }
+    agentMic.addEventListener('click', () => {
+      if (!agentRec) return;
+      if (!agentListening) {
+        try { agentRec.start(); } catch (e) { console.warn(e); }
+      } else { agentRec.stop(); }
+    });
+    setupAgentSpeech();
+
+    // Click fuera del modal cierra (en móvil)
+    window.addEventListener('click', (ev) => {
+      const path = ev.composedPath ? ev.composedPath() : (ev.path || []);
+      if (agentModal.classList.contains('open') && !path.includes(agentModal) && !path.includes(agentBtn)) {
+        // cerramos si el click no es dentro del modal ni en el botón
+        closeAgent();
+      }
+    });
+
+    // Evitar que el agente rompa el scroll principal: foco y scroll manejados dentro
+    agentMessages.addEventListener('click', () => agentPrompt.focus());
+
+    // Fin agente chat
+  </script>
+</body>
+</html>
